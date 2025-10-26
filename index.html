@@ -5,90 +5,182 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>工作汇报系统</title>
 <style>
+  :root {
+    --bg: #f5f5f5;
+    --panel: #ffffff;
+    --text: #222;
+    --subtext: #666;
+    --border: #ddd;
+    --highlight: #333;
+  }
+
   body {
     margin: 0;
-    font-family: "Microsoft YaHei", sans-serif;
-    background: #eef2f7;
-    color: #333;
-  }
-
-  header {
-    background: linear-gradient(90deg, #6a11cb, #2575fc);
-    color: white;
-    text-align: center;
-    padding: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    letter-spacing: 2px;
-  }
-
-  .container {
+    font-family: "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
     display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
-    gap: 20px;
+    flex-direction: column;
   }
 
-  /* 左侧栏 */
-  .sidebar {
-    flex: 1 1 260px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding: 20px;
+  /* ===== 顶部标题栏 ===== */
+  header {
+    background: linear-gradient(135deg, #1a1a1a, #2b2b2b);
+    color: #f1f1f1;
+    text-align: center;
+    padding: 40px 20px 32px;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   }
 
-  .sidebar h2 {
-    font-size: 20px;
-    margin-bottom: 16px;
+  header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 120px;
+    height: 3px;
+    background: #888;
+    transform: translateX(-50%);
+    border-radius: 2px;
   }
 
-  .report-btn {
+  /* ===== 页面主要布局 ===== */
+  main {
+    display: flex;
+    justify-content: center;
+    margin: 40px auto;
+    max-width: 1200px;
     width: 100%;
-    background: #e3e7ff;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 16px;
-    text-align: left;
-    font-size: 15px;
+    padding: 0 20px;
+  }
+
+  /* ===== 固定导航栏 ===== */
+  nav {
+    background: var(--panel);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 24px;
+    width: 260px;
+    position: sticky;
+    top: 30px;
+    align-self: flex-start;
+    height: fit-content;
+  }
+
+  nav h2 {
+    font-size: 20px;
+    border-left: 4px solid var(--highlight);
+    padding-left: 10px;
+    margin-bottom: 15px;
+  }
+
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  nav li {
     margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
   }
 
-  .report-btn.active {
-    background: linear-gradient(90deg, #6a11cb, #2575fc);
-    color: white;
+  nav a {
+    text-decoration: none;
+    color: var(--text);
+    transition: color 0.2s, transform 0.2s;
   }
 
-  .report-btn:hover {
+  nav a:hover {
+    color: #000;
+    font-weight: bold;
     transform: translateX(4px);
   }
 
-  /* 右侧内容 */
-  .content {
-    flex: 3 1 500px;
-    background: white;
+  /* ===== 汇报记录区 ===== */
+  section.reports {
+    flex: 1;
+    background: var(--panel);
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 24px;
+    margin-left: 24px;
+  }
+
+  section.reports h2 {
+    font-size: 22px;
+    border-left: 4px solid var(--highlight);
+    padding-left: 10px;
+    margin-bottom: 30px;
+  }
+
+  /* ===== 每条汇报独立卡片 ===== */
+  article {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 40px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    transition: all 0.3s;
+  }
+
+  article:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  }
+
+  .report-date {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 15px;
+  }
+
+  .report-text {
+    color: var(--subtext);
+    margin-bottom: 20px;
+    font-size: 15px;
     line-height: 1.8;
   }
 
-  .content h2 {
-    font-size: 22px;
-    margin-bottom: 10px;
+  /* ===== 图片布局 ===== */
+  .report-images {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
   }
 
-  .date {
-    color: #2575fc;
-    font-weight: bold;
-    margin-bottom: 20px;
+  .report-images img {
+    max-width: 90%;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
   }
 
-  @media (max-width: 768px) {
-    .container {
+  .report-images img:hover {
+    transform: scale(1.03);
+  }
+
+  @media (max-width: 800px) {
+    main {
       flex-direction: column;
+    }
+    nav {
+      position: relative;
+      width: 100%;
+      top: 0;
+      margin-bottom: 20px;
+    }
+    section.reports {
+      margin-left: 0;
     }
   }
 </style>
@@ -96,72 +188,55 @@
 <body>
   <header>工作汇报系统</header>
 
-  <div class="container">
-    <aside class="sidebar">
-      <h2>汇报记录</h2>
-      <button class="report-btn active" data-report="week1">9月22日 - 9月28日</button>
-      <button class="report-btn" data-report="week2">10月9日 - 10月12日</button>
-      <button class="report-btn" data-report="week3">10月13日 - 10月19日</button>
-    </aside>
-
-    <section class="content" id="reportContent">
-      <h2>汇报内容</h2>
-      <div class="date">9月22日至9月28日 工作汇报</div>
-      <ul>
-        <li>完成公司新项目的需求分析和文档编写。</li>
-        <li>学习了团队协作工具的使用流程。</li>
-        <li>整理并优化了前端开发环境配置。</li>
+  <main>
+    <!-- ===== 固定导航 ===== -->
+    <nav>
+      <h2>汇报目录</h2>
+      <ul id="reportNav">
+        <li><a href="#report1">9月22日 - 9月28日 工作汇报</a></li>
+        <li><a href="#report2">10月9日 - 10月12日 工作汇报</a></li>
+        <li><a href="#report3">10月13日 - 10月19日 工作汇报</a></li>
       </ul>
+    </nav>
+
+    <!-- ===== 汇报内容 ===== -->
+    <section class="reports" id="reports">
+      <h2>汇报记录</h2>
+
+      <article id="report1">
+        <div class="report-date">9月22日 - 9月28日 工作汇报</div>
+        <div class="report-text">
+          本周完成了项目的需求分析和初步设计工作。  
+          与产品团队讨论了用户交互逻辑，制作了初版原型图。
+        </div>
+        <div class="report-images">
+          <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600" alt="会议图像">
+          <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=600" alt="原型图">
+        </div>
+      </article>
+
+      <article id="report2">
+        <div class="report-date">10月9日 - 10月12日 工作汇报</div>
+        <div class="report-text">
+          学习了前端响应式设计和组件化布局。  
+          完成了首页结构优化，适配了移动端显示效果。
+        </div>
+        <div class="report-images">
+          <img src="https://images.unsplash.com/photo-1581092335941-5cbf39c06c81?w=600" alt="前端代码">
+        </div>
+      </article>
+
+      <article id="report3">
+        <div class="report-date">10月13日 - 10月19日 工作汇报</div>
+        <div class="report-text">
+          本周重点学习了 Python 数据分析模块，包括 pandas、matplotlib 等。  
+          结合实际案例完成了销售数据可视化任务。
+        </div>
+        <div class="report-images">
+          <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600" alt="数据图表">
+        </div>
+      </article>
     </section>
-  </div>
-
-  <script>
-    const reports = {
-      week1: {
-        date: "9月22日至9月28日 工作汇报",
-        content: `
-          <ul>
-            <li>完成公司新项目的需求分析和文档编写。</li>
-            <li>学习了团队协作工具的使用流程。</li>
-            <li>整理并优化了前端开发环境配置。</li>
-          </ul>`
-      },
-      week2: {
-        date: "10月9日至10月12日 工作汇报",
-        content: `
-          <ul>
-            <li>学习了 HTML、CSS 响应式布局设计。</li>
-            <li>完成登录页面与导航栏的前端开发。</li>
-            <li>参与团队代码评审并提出优化建议。</li>
-          </ul>`
-      },
-      week3: {
-        date: "10月13日至10月19日 工作汇报",
-        content: `
-          <ul>
-            <li>学习 Python 面向对象编程与类型注解。</li>
-            <li>掌握函数与类的继承关系与多态使用。</li>
-            <li>完成数据分析案例的实践任务。</li>
-          </ul>`
-      }
-    };
-
-    const buttons = document.querySelectorAll(".report-btn");
-    const reportContent = document.getElementById("reportContent");
-
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        buttons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        const data = reports[btn.dataset.report];
-        reportContent.innerHTML = `
-          <h2>汇报内容</h2>
-          <div class="date">${data.date}</div>
-          ${data.content}
-        `;
-      });
-    });
-  </script>
+  </main>
 </body>
 </html>
