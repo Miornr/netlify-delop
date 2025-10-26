@@ -1,79 +1,167 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-	<title></title>
-	<style type="text/css">
-	  body {
-            background-color: url();
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工作汇报系统</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Microsoft YaHei", sans-serif;
+    background: #eef2f7;
+    color: #333;
+  }
 
-  #tou{
-		width: auto;
-		height:100px;
-		background-color:#000;
-		color: #FFF;
-		font-size:40px;
-		text-align: center;
-		line-height: 100px;
-		border-radius:5px 5px 5px 5px; 
-	}
-	.shousuo{
-		float: right;
-		margin-right: 20px; 
-		font-size: 40px;
-	}
-	#banner {
-	width: 220px;
-	height: 80px;
-	float: left;
-	background-color: #000;
-	font-size: 20px;
-	line-height: 20px;
-	text-align: center;
-	margin-top: 5px;
-	border-radius: 8px;
-}
-#banner a{
-        	text-decoration: none;
-        	color: #fff;
-        }
-	#wei {
-	width: 100%;
-	margin: 0px auto;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	color: #000;
-}
-.zhongbu{
-	height: 250px;
-	width: 1200px;
-	margin: auto;
-	margin-top: 150px;
-}
-.zhongbu img{
-	transition:all 0.6s;
-	opacity: 0.8;
-}
-.zhongbu img:hover{
-	filter:alpha(opacity=60);
-	transform:scale(1.4);
-	-moz-opacity:1;
-	opacity: 1;
-}
-	</style>
+  header {
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  /* 左侧栏 */
+  .sidebar {
+    flex: 1 1 260px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+  }
+
+  .sidebar h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .report-btn {
+    width: 100%;
+    background: #e3e7ff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .report-btn.active {
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    color: white;
+  }
+
+  .report-btn:hover {
+    transform: translateX(4px);
+  }
+
+  /* 右侧内容 */
+  .content {
+    flex: 3 1 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 30px;
+    line-height: 1.8;
+  }
+
+  .content h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .date {
+    color: #2575fc;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+  }
+</style>
 </head>
 <body>
-<div id="tou">
-     <h1>傻逼贺婉颖</h1>
-<div>
-</div>
+  <header>工作汇报系统</header>
 
+  <div class="container">
+    <aside class="sidebar">
+      <h2>汇报记录</h2>
+      <button class="report-btn active" data-report="week1">9月22日 - 9月28日</button>
+      <button class="report-btn" data-report="week2">10月9日 - 10月12日</button>
+      <button class="report-btn" data-report="week3">10月13日 - 10月19日</button>
+    </aside>
 
-</div>
-</div>
+    <section class="content" id="reportContent">
+      <h2>汇报内容</h2>
+      <div class="date">9月22日至9月28日 工作汇报</div>
+      <ul>
+        <li>完成公司新项目的需求分析和文档编写。</li>
+        <li>学习了团队协作工具的使用流程。</li>
+        <li>整理并优化了前端开发环境配置。</li>
+      </ul>
+    </section>
+  </div>
 
+  <script>
+    const reports = {
+      week1: {
+        date: "9月22日至9月28日 工作汇报",
+        content: `
+          <ul>
+            <li>完成公司新项目的需求分析和文档编写。</li>
+            <li>学习了团队协作工具的使用流程。</li>
+            <li>整理并优化了前端开发环境配置。</li>
+          </ul>`
+      },
+      week2: {
+        date: "10月9日至10月12日 工作汇报",
+        content: `
+          <ul>
+            <li>学习了 HTML、CSS 响应式布局设计。</li>
+            <li>完成登录页面与导航栏的前端开发。</li>
+            <li>参与团队代码评审并提出优化建议。</li>
+          </ul>`
+      },
+      week3: {
+        date: "10月13日至10月19日 工作汇报",
+        content: `
+          <ul>
+            <li>学习 Python 面向对象编程与类型注解。</li>
+            <li>掌握函数与类的继承关系与多态使用。</li>
+            <li>完成数据分析案例的实践任务。</li>
+          </ul>`
+      }
+    };
+
+    const buttons = document.querySelectorAll(".report-btn");
+    const reportContent = document.getElementById("reportContent");
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        buttons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const data = reports[btn.dataset.report];
+        reportContent.innerHTML = `
+          <h2>汇报内容</h2>
+          <div class="date">${data.date}</div>
+          ${data.content}
+        `;
+      });
+    });
+  </script>
 </body>
 </html>
-
-
