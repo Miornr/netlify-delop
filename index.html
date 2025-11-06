@@ -1,237 +1,135 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>工作汇报系统</title>
-<style>
-  :root {
-    --bg: #f5f5f5;
-    --panel: #ffffff;
-    --text: #222;
-    --subtext: #666;
-    --border: #ddd;
-    --highlight: #333;
-  }
-
-  body {
-    margin: 0;
-    font-family: "Helvetica Neue", "Microsoft YaHei", sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ===== 顶部标题栏 ===== */
-  header {
-    background: linear-gradient(135deg, #1a1a1a, #2b2b2b);
-    color: #f1f1f1;
-    text-align: center;
-    padding: 40px 20px 32px;
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    position: relative;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  }
-
-  header::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 120px;
-    height: 3px;
-    background: #888;
-    transform: translateX(-50%);
-    border-radius: 2px;
-  }
-
-  /* ===== 页面主要布局 ===== */
-  main {
-    display: flex;
-    justify-content: center;
-    margin: 40px auto;
-    max-width: 1200px;
-    width: 100%;
-    padding: 0 20px;
-  }
-
-  /* ===== 固定导航栏 ===== */
-  nav {
-    background: var(--panel);
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    padding: 24px;
-    width: 260px;
-    position: sticky;
-    top: 30px;
-    align-self: flex-start;
-    height: fit-content;
-  }
-
-  nav h2 {
-    font-size: 20px;
-    border-left: 4px solid var(--highlight);
-    padding-left: 10px;
-    margin-bottom: 15px;
-  }
-
-  nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  nav li {
-    margin-bottom: 10px;
-  }
-
-  nav a {
-    text-decoration: none;
-    color: var(--text);
-    transition: color 0.2s, transform 0.2s;
-  }
-
-  nav a:hover {
-    color: #000;
-    font-weight: bold;
-    transform: translateX(4px);
-  }
-
-  /* ===== 汇报记录区 ===== */
-  section.reports {
-    flex: 1;
-    background: var(--panel);
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    padding: 24px;
-    margin-left: 24px;
-  }
-
-  section.reports h2 {
-    font-size: 22px;
-    border-left: 4px solid var(--highlight);
-    padding-left: 10px;
-    margin-bottom: 30px;
-  }
-
-  /* ===== 每条汇报独立卡片 ===== */
-  article {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 40px;
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-    transition: all 0.3s;
-  }
-
-  article:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-  }
-
-  .report-date {
-    font-size: 20px;
-    font-weight: bold;
-    color: #000;
-    margin-bottom: 15px;
-  }
-
-  .report-text {
-    color: var(--subtext);
-    margin-bottom: 20px;
-    font-size: 15px;
-    line-height: 1.8;
-  }
-
-  /* ===== 图片布局 ===== */
-  .report-images {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .report-images img {
-    max-width: 90%;
-    height: auto;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-  }
-
-  .report-images img:hover {
-    transform: scale(1.03);
-  }
-
-  @media (max-width: 800px) {
-    main {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>工作汇报系统</title>
+  <style>
+    /* ===== 全局样式 ===== */
+    body {
+      font-family: "Segoe UI", "微软雅黑", sans-serif;
+      background: #f8f8f8;
+      color: #222;
+      margin: 0;
+      padding: 0;
+      display: flex;
       flex-direction: column;
+      align-items: center;
     }
-    nav {
-      position: relative;
+
+    h1 {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      padding: 1rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      margin-top: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    /* ===== 主体布局 ===== */
+    .container {
+      display: flex;
+      gap: 2rem;
+      margin: 2rem;
+      max-width: 1100px;
       width: 100%;
-      top: 0;
-      margin-bottom: 20px;
     }
-    section.reports {
-      margin-left: 0;
+
+    /* 左侧时间栏 */
+    .sidebar {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-width: 200px;
     }
-  }
-</style>
+
+    .time-item {
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+    }
+
+    .time-item:hover,
+    .time-item.active {
+      background: #ffffff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      color: #0078d7;
+    }
+
+    /* 右侧内容区 */
+    .content {
+      flex: 3;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    /* 响应式布局 */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header>工作汇报系统</header>
+  <h1>工作汇报系统</h1>
 
-  <main>
-    <!-- ===== 固定导航 ===== -->
-    <nav>
-      <h2>汇报目录</h2>
-      <ul id="reportNav">
-        <li><a href="#report1">10月20日 - 10月26日 工作汇报</a></li>
-      </ul>
-    </nav>
+  <div class="container">
+    <div class="sidebar">
+      <div class="time-item active" onclick="showReport('week1', this)">10月20日 - 10月26日</div>
+      <div class="time-item" onclick="showReport('week2', this)">10月27日 - 11月2日</div>
+      <div class="time-item" onclick="showReport('week3', this)">11月3日 - 11月9日</div>
+    </div>
 
-    <!-- ===== 汇报内容 ===== -->
-    <section class="reports" id="reports">
-      <h2>汇报记录</h2>
+    <div class="content" id="reportContent">
+      <h2>10月20日 - 10月26日 工作汇报</h2>
+      <p>一、学习 Python 基础语法，包括变量、数据类型、条件语句、循环语句及函数的使用。</p>
+      <p>二、完成环境配置及相关依赖包安装，掌握常用库（如 numpy、opencv）的基本调用。</p>
+      <p>三、总结代码规范与注释标准，提升代码可读性。</p>
+    </div>
+  </div>
 
-      <article id="report1">
-        <div class="report-date">10月20日 - 10月26日 工作汇报</div>
-        <div class="report-text">
-         一、学习python。  
-          1.掌握python语言的基础知识并自己实操编写，基本语法，如变量、数据类型、条件语句、循环语句和函数等。
-          <br>
-          <div class="report-images">
-          <img src="1.png" alt="基础语法和变量">
-          基础语法和变量
-          <img src="2.png" alt="循环语句">
-          循环语句
-          <img src="3.png" alt="条件语句">
-          条件语句
-        </div>
-        <br>
-          2.更深入的学习了面向对象编程、递归排序算法。
-        
-          <br>
-          3.了解python的前沿技术，如数据分析、机器学习和人工智能等。
-         <br>
-          Python能够实现图像识别、自然语言处理、语音识别、机器翻译;Matplotlib和Seaborn等库可以进行数据可视化;<br>
-          二、制作网站。
-          <br>  
-          1.学习了HTML、CSS和JavaScript等前端技术，掌握了网页布局、样式设计和交互效果的实现方法。
-          <br>  
-          2.注册使用域名链接服务器，完成网站的上线发布。
-          <br>
-        </div>
-      </article>
-    </section>
-  </main>
+  <script>
+    const reports = {
+      week1: `
+        <h2>10月20日 - 10月26日 工作汇报</h2>
+        <p>一、学习 Python 基础语法，包括变量、数据类型、条件语句、循环语句及函数的使用。</p>
+        <p>二、完成环境配置及相关依赖包安装，掌握常用库（如 numpy、opencv）的基本调用。</p>
+        <p>三、总结代码规范与注释标准，提升代码可读性。</p>
+      `,
+      week2: `
+        <h2>10月27日 - 11月2日 工作汇报</h2>
+        <p>一、继续练习 Python 文件读写操作，掌握异常处理与模块导入。</p>
+        <p>二、学习图像处理基础，尝试读取与显示图像，进行简单图像变换。</p>
+        <p>三、参与小组讨论，编写一个图像灰度化的示例项目。</p>
+      `,
+      week3: `
+        <h2>11月3日 - 11月9日 工作汇报</h2>
+        <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
+        <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
+        <p>三、完成阶段性项目总结报告。</p>
+      `
+    };
+
+    function showReport(week, el) {
+      document.getElementById('reportContent').innerHTML = reports[week];
+      document.querySelectorAll('.time-item').forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
+    }
+  </script>
 </body>
 </html>
-
