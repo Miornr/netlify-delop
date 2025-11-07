@@ -5,82 +5,136 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>工作汇报系统</title>
   <style>
-    /* ===== 全局样式 ===== */
     body {
       font-family: "Segoe UI", "微软雅黑", sans-serif;
-      background: #f8f8f8;
+      background: linear-gradient(135deg, #fdfdfd, #f3f3f3);
       color: #222;
       margin: 0;
       padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
+      scroll-behavior: smooth;
     }
 
     h1 {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(16px);
       padding: 1rem 2rem;
-      border-radius: 16px;
+      border-radius: 20px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       margin-top: 1.5rem;
       font-size: 1.8rem;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease;
     }
 
-    /* ===== 主体布局 ===== */
+    h1:hover {
+      transform: scale(1.02);
+    }
+
     .container {
       display: flex;
       gap: 2rem;
       margin: 2rem;
-      max-width: 1100px;
+      max-width: 1200px;
       width: 100%;
+      flex-wrap: wrap;
     }
 
     /* 左侧时间栏 */
     .sidebar {
       flex: 1;
+      min-width: 220px;
       background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       border-radius: 20px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      min-width: 200px;
     }
 
     .time-item {
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.25s;
+      transition: all 0.3s ease;
       padding: 0.75rem 1rem;
       border-radius: 12px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .time-item:hover,
+    .time-item::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background: #0078d7;
+      transition: width 0.3s;
+    }
+
+    .time-item:hover::after {
+      width: 100%;
+    }
+
     .time-item.active {
       background: #ffffff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
       color: #0078d7;
     }
 
-    /* 右侧内容区 */
+    /* 内容区 */
     .content {
       flex: 3;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(12px);
+      min-width: 300px;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(16px);
       border-radius: 20px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       padding: 2rem;
-      font-size: 1rem;
       line-height: 1.8;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
-    /* 响应式布局 */
+    .content.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 图片样式 */
+    .content img {
+      display: block;
+      width: 100%;              /* 让图片自动适应容器宽度 */
+      height: auto;             /* 保持原始比例 */
+      object-fit: contain;      /* 不裁剪，不拉伸 */
+      border-radius: 15px;
+      margin-top: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .content img:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    }
+
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
+      }
+
+      .sidebar {
+        order: 1;
+      }
+
+      .content {
+        order: 2;
       }
     }
   </style>
@@ -95,11 +149,12 @@
       <div class="time-item" onclick="showReport('week3', this)">11月3日 - 11月9日</div>
     </div>
 
-    <div class="content" id="reportContent">
+    <div class="content active" id="reportContent">
       <h2>10月20日 - 10月26日 工作汇报</h2>
       <p>一、学习 Python 基础语法，包括变量、数据类型、条件语句、循环语句及函数的使用。</p>
       <p>二、完成环境配置及相关依赖包安装，掌握常用库（如 numpy、opencv）的基本调用。</p>
       <p>三、总结代码规范与注释标准，提升代码可读性。</p>
+      <img src="https://picsum.photos/900/400?random=1" alt="工作截图">
     </div>
   </div>
 
@@ -110,25 +165,61 @@
         <p>一、学习 Python 基础语法，包括变量、数据类型、条件语句、循环语句及函数的使用。</p>
         <p>二、完成环境配置及相关依赖包安装，掌握常用库（如 numpy、opencv）的基本调用。</p>
         <p>三、总结代码规范与注释标准，提升代码可读性。</p>
+        <img src="https://picsum.photos/900/400?random=1" alt="工作截图">
       `,
       week2: `
         <h2>10月27日 - 11月2日 工作汇报</h2>
         <p>一、继续练习 Python 文件读写操作，掌握异常处理与模块导入。</p>
         <p>二、学习图像处理基础，尝试读取与显示图像，进行简单图像变换。</p>
         <p>三、参与小组讨论，编写一个图像灰度化的示例项目。</p>
+        <img src="https://picsum.photos/900/400?random=2" alt="小组项目展示">
       `,
       week3: `
         <h2>11月3日 - 11月9日 工作汇报</h2>
         <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
         <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
         <p>三、完成阶段性项目总结报告。</p>
+        <h2>11月3日 - 11月9日 工作汇报</h2>
+        <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
+        <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
+        <p>三、完成阶段性项目总结报告。</p>
+        <h2>11月3日 - 11月9日 工作汇报</h2>
+        <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
+        <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
+        <p>三、完成阶段性项目总结报告。</p>
+        <h2>11月3日 - 11月9日 工作汇报</h2>
+        <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
+        <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
+        <p>三、完成阶段性项目总结报告。</p>
+        <h2>11月3日 - 11月9日 工作汇报</h2>
+        <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
+        <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
+        <p>三、完成阶段性项目总结报告。</p>
+        <img src="https://picsum.photos/900/400?random=3" alt="项目总结">
       `
     };
 
     function showReport(week, el) {
-      document.getElementById('reportContent').innerHTML = reports[week];
-      document.querySelectorAll('.time-item').forEach(item => item.classList.remove('active'));
+      const content = document.getElementById('reportContent');
+      const items = document.querySelectorAll('.time-item');
+
+      // 切换选中状态
+      items.forEach(item => item.classList.remove('active'));
       el.classList.add('active');
+
+      // 添加淡出动画
+      content.classList.remove('active');
+      setTimeout(() => {
+        content.innerHTML = reports[week];
+        content.classList.add('active');
+      }, 300);
+
+      // 手机端点击后自动滚动
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          content.scrollIntoView({ behavior: "smooth" });
+        }, 300);
+      }
     }
   </script>
 </body>
