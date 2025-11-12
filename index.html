@@ -1,226 +1,500 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>工作汇报系统</title>
-  <style>
-    body {
-      font-family: "Segoe UI", "微软雅黑", sans-serif;
-      background: linear-gradient(135deg, #fdfdfd, #f3f3f3);
-      color: #222;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      scroll-behavior: smooth;
-    }
-
-    h1 {
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(16px);
-      padding: 1rem 2rem;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      margin-top: 1.5rem;
-      font-size: 1.8rem;
-      letter-spacing: 1px;
-      transition: transform 0.3s ease;
-    }
-
-    h1:hover {
-      transform: scale(1.02);
-    }
-
-    .container {
-      display: flex;
-      gap: 2rem;
-      margin: 2rem;
-      max-width: 1200px;
-      width: 100%;
-      flex-wrap: wrap;
-    }
-
-    /* 左侧时间栏 */
-    .sidebar {
-      flex: 1;
-      min-width: 220px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .time-item {
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      padding: 0.75rem 1rem;
-      border-radius: 12px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .time-item::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 2px;
-      width: 0;
-      background: #0078d7;
-      transition: width 0.3s;
-    }
-
-    .time-item:hover::after {
-      width: 100%;
-    }
-
-    .time-item.active {
-      background: #ffffff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
-      color: #0078d7;
-    }
-
-    /* 内容区 */
-    .content {
-      flex: 3;
-      min-width: 300px;
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(16px);
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      padding: 2rem;
-      line-height: 1.8;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .content.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* 图片样式 */
-    .content img {
-      display: block;
-      width: 100%;              /* 让图片自动适应容器宽度 */
-      height: auto;             /* 保持原始比例 */
-      object-fit: contain;      /* 不裁剪，不拉伸 */
-      border-radius: 15px;
-      margin-top: 1.5rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    .content img:hover {
-      transform: scale(1.03);
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        order: 1;
-      }
-
-      .content {
-        order: 2;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作汇报展示</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* 顶部固定导航栏 */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .top-nav h1 {
+            font-size: 28px;
+            color: #222;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .top-nav h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #6c757d, #adb5bd);
+            border-radius: 2px;
+        }
+        
+        .time-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .time-btn {
+            background: none;
+            border: 1px solid #e0e0e0;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            color: #555;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .time-btn i {
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+        
+        .time-btn:hover {
+            background-color: #f5f5f5;
+            border-color: #d0d0d0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .time-btn:hover i {
+            transform: rotate(15deg);
+        }
+        
+        .time-btn.active {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            border-color: #495057;
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        }
+        
+        /* 内容区域 */
+        .content-area {
+            margin-top: 160px;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .report-content {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .report-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .report-content:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #6c757d, #adb5bd);
+        }
+        
+        .report-content h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #222;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .report-content h2 i {
+            color: #6c757d;
+        }
+        
+        .report-content p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #eaeaea, transparent);
+            margin: 25px 0;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+            color: #555;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 10px;
+        }
+        
+        li:before {
+            content: '•';
+            color: #6c757d;
+            font-weight: bold;
+            position: absolute;
+            left: -10px;
+        }
+        
+        /* 图片样式 */
+        .report-image {
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .report-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .report-image img:hover {
+            transform: scale(1.02);
+        }
+        
+        .image-caption {
+            margin-top: 10px;
+            font-style: italic;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .top-nav {
+                padding: 15px 0;
+            }
+            
+            .nav-container {
+                width: 95%;
+            }
+            
+            .top-nav h1 {
+                font-size: 22px;
+            }
+            
+            .time-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .time-btn {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+            
+            .content-area {
+                margin-top: 170px;
+                padding: 20px;
+            }
+            
+            .report-content {
+                padding: 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .time-buttons {
+                gap: 10px;
+            }
+            
+            .time-btn {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+            
+            .content-area {
+                margin-top: 180px;
+            }
+            
+            .report-content h2 {
+                font-size: 20px;
+            }
+        }
+        
+        /* 装饰元素 */
+        .decoration {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(108, 117, 125, 0.05) 0%, rgba(108, 117, 125, 0) 70%);
+            z-index: -1;
+        }
+        
+        .decoration:nth-child(1) {
+            top: 10%;
+            left: 5%;
+        }
+        
+        .decoration:nth-child(2) {
+            bottom: 10%;
+            right: 5%;
+        }
+    </style>
 </head>
 <body>
-  <h1>工作汇报系统</h1>
-
-  <div class="container">
-    <div class="sidebar">
-      <div class="time-item active" onclick="showReport('week1', this)">10月20日 - 10月26日</div>
-      <div class="time-item" onclick="showReport('week2', this)">10月27日 - 11月2日</div>
-      <div class="time-item" onclick="showReport('week3', this)">11月3日 - 11月9日</div>
+    <!-- 装饰背景元素 -->
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+    
+    <!-- 顶部固定导航 -->
+    <div class="top-nav">
+        <div class="nav-container">
+            <h1><i class="fas fa-chart-line"></i> 工作汇报展示</h1>
+            <div class="time-buttons">
+                <button class="time-btn active" data-date="2025/10/20 - 10/26">
+                    <i class="far fa-calendar-alt"></i> 2025/10/20 - 10/26
+                </button>
+                <button class="time-btn" data-date="2025/10/27 - 11/2">
+                    <i class="far fa-calendar-alt"></i> 2025/10/27 - 11/2
+                </button>
+                <button class="time-btn" data-date="2025/11/3 - 11/9">
+                    <i class="far fa-calendar-alt"></i> 2025/11/3 - 11/9
+                </button>
+                <button class="time-btn" data-date="2025/11/10 - 11/17">
+                    <i class="far fa-calendar-alt"></i> 2025/11/10 - 11/17
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 内容区域 - 只显示一个汇报内容 -->
+    <div class="content-area">
+        <div class="report-content" id="current-report">
+            <h2><i class="fas fa-file-alt"></i> 工作汇报 - 2025-11-01</h2>
+            <div class="divider"></div>
+            <p>一、学习python。  
+          1.掌握python语言的基础知识并自己实操编写，基本语法，如变量、数据类型、条件语句、循环语句和函数等。
+          <br>
+          <div class="report-images">
+          <img src="1.png" alt="基础语法和变量">
+          基础语法和变量
+          <img src="2.png" alt="循环语句">
+          循环语句
+          <img src="3.png" alt="条件语句">
+          条件语句
+        </div>
+        <br>
+          2.更深入的学习了面向对象编程、递归排序算法。
+        
+          <br>
+          3.了解python的前沿技术，如数据分析、机器学习和人工智能等。
+         <br>
+          Python能够实现图像识别、自然语言处理、语音识别、机器翻译;Matplotlib和Seaborn等库可以进行数据可视化;<br>
+          二、制作网站。
+          <br>  
+          1.学习了HTML、CSS和JavaScript等前端技术，掌握了网页布局、样式设计和交互效果的实现方法。
+          <br>  
+          2.注册使用域名链接服务器，完成网站的上线发布。
+          <br></p>
+        </div>
     </div>
 
-    <div class="content active" id="reportContent">
-      <h2>10月20日 - 10月26日 工作汇报</h2>
-      <p>一、学习 Python 基础语法，包括变量、数据类型、条件语句、循环语句及函数的使用。</p>
-      <p>二、完成环境配置及相关依赖包安装，掌握常用库（如 numpy、opencv）的基本调用。</p>
-      <p>三、总结代码规范与注释标准，提升代码可读性。</p>
-      <img src="https://picsum.photos/900/400?random=1" alt="工作截图">
-    </div>
-  </div>
-
-  <script>
-    const reports = {
-      week1: `
-        <h2>10月20日 - 10月26日 工作汇报</h2>
-        <p>一、学习 Python 基础语法，包括变量、数据类型、条件语句、循环语句及函数的使用。</p>
-        <p>二、完成环境配置及相关依赖包安装，掌握常用库（如 numpy、opencv）的基本调用。</p>
-        <p>三、总结代码规范与注释标准，提升代码可读性。</p>
-        <img src="https://picsum.photos/900/400?random=1" alt="工作截图">
-      `,
-      week2: `
-        <h2>10月27日 - 11月2日 工作汇报</h2>
-        <p>一、继续练习 Python 文件读写操作，掌握异常处理与模块导入。</p>
-        <p>二、学习图像处理基础，尝试读取与显示图像，进行简单图像变换。</p>
-        <p>三、参与小组讨论，编写一个图像灰度化的示例项目。</p>
-        <img src="https://picsum.photos/900/400?random=2" alt="小组项目展示">
-      `,
-      week3: `
-        <h2>11月3日 - 11月9日 工作汇报</h2>
-        <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
-        <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
-        <p>三、完成阶段性项目总结报告。</p>
-        <h2>11月3日 - 11月9日 工作汇报</h2>
-        <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
-        <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
-        <p>三、完成阶段性项目总结报告。</p>
-        <h2>11月3日 - 11月9日 工作汇报</h2>
-        <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
-        <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
-        <p>三、完成阶段性项目总结报告。</p>
-        <h2>11月3日 - 11月9日 工作汇报</h2>
-        <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
-        <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
-        <p>三、完成阶段性项目总结报告。</p>
-        <h2>11月3日 - 11月9日 工作汇报</h2>
-        <p>一、掌握 OpenCV 的基本操作，如图像缩放、旋转、滤波处理。</p>
-        <p>二、学习 Matplotlib 绘图库的使用，制作数据可视化图表。</p>
-        <p>三、完成阶段性项目总结报告。</p>
-        <img src="https://picsum.photos/900/400?random=3" alt="项目总结">
-      `
-    };
-
-    function showReport(week, el) {
-      const content = document.getElementById('reportContent');
-      const items = document.querySelectorAll('.time-item');
-
-      // 切换选中状态
-      items.forEach(item => item.classList.remove('active'));
-      el.classList.add('active');
-
-      // 添加淡出动画
-      content.classList.remove('active');
-      setTimeout(() => {
-        content.innerHTML = reports[week];
-        content.classList.add('active');
-      }, 300);
-
-      // 手机端点击后自动滚动
-      if (window.innerWidth <= 768) {
-        setTimeout(() => {
-          content.scrollIntoView({ behavior: "smooth" });
-        }, 300);
-      }
-    }
-  </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeButtons = document.querySelectorAll('.time-btn');
+            const currentReport = document.getElementById('current-report');
+            const contentArea = document.querySelector('.content-area');
+            
+            // 不同日期的汇报内容
+            const reportContents = {
+                '2025/10/20 - 10/26': {
+                    title: '工作汇报 - 2025/10/20 - 10/26',
+                    content: `
+                        <p>一、学习python。  
+          1.掌握python语言的基础知识并自己实操编写，基本语法，如变量、数据类型、条件语句、循环语句和函数等。
+          <br>
+          <div class="report-images">
+          <img src="1.png" alt="基础语法和变量">
+          基础语法和变量
+          <img src="2.png" alt="循环语句">
+          循环语句
+          <img src="3.png" alt="条件语句">
+          条件语句
+        </div>
+        <br>
+          2.更深入的学习了面向对象编程、递归排序算法。
+        
+          <br>
+          3.了解python的前沿技术，如数据分析、机器学习和人工智能等。
+         <br>
+          Python能够实现图像识别、自然语言处理、语音识别、机器翻译;Matplotlib和Seaborn等库可以进行数据可视化;<br>
+          二、制作网站。
+          <br>  
+          1.学习了HTML、CSS和JavaScript等前端技术，掌握了网页布局、样式设计和交互效果的实现方法。
+          <br>  
+          2.注册使用域名链接服务器，完成网站的上线发布。
+          <br></p>
+                    `
+                },
+               '2025/10/27 - 11/2': {
+                    title: '工作汇报 - 2025/10/27 - 11/2',
+                    content: `
+                        <p>本次汇报进一步完善了数据可视化功能，增加了多种图表类型，并对用户反馈进行了分析。</p>
+                        <p>具体工作包括：</p>
+                        <ul>
+                            <li>新增柱状图和饼图可视化组件</li>
+                            <li>收集并分析了用户反馈数据</li>
+                            <li>修复了数据加载时的性能问题</li>
+                            <li>优化了移动端显示效果</li>
+                            <li>完成了第二轮用户测试</li>
+                        </ul>
+                        
+                        <div class="report-image">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="数据分析图表">
+                            <div class="image-caption">用户数据分析图表</div>
+                        </div>
+                        
+                        <div class="divider"></div>
+                        <p><strong>下一步计划：</strong> 根据用户反馈优化界面设计，增加数据导出功能。</p>
+                    `
+                },
+                '2025/11/3 - 11/9': {
+                    title: '工作汇报 - 2025/11/3 - 11/9',
+                    content: `
+                        <p>本次汇报完成了项目第一阶段的所有功能，准备进入测试阶段，并对下一阶段工作进行了规划。</p>
+                        <p>具体工作包括：</p>
+                        <ul>
+                            <li>完成了所有核心功能的开发</li>
+                            <li>编写了完整的用户文档</li>
+                            <li>制定了测试计划和测试用例</li>
+                            <li>规划了第二阶段的功能需求</li>
+                            <li>准备了项目演示材料</li>
+                        </ul>
+                        
+                        <div class="report-image">
+                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="项目成果展示">
+                            <div class="image-caption">项目成果展示</div>
+                        </div>
+                        
+                        <div class="divider"></div>
+                        <p><strong>下一步计划：</strong> 进行系统测试，修复发现的问题，准备项目上线。</p>
+                    `
+                },
+                '2025/11/10 - 11/17': {
+                    title: '工作汇报 - 2025/11/10 - 11/17',
+                    content: `
+                }`
+                }
+            };
+            
+            timeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    timeButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 给当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    // 添加点击动画效果
+                    this.classList.add('pulse');
+                    setTimeout(() => {
+                        this.classList.remove('pulse');
+                    }, 600);
+                    
+                    // 获取日期并更新内容
+                    const date = this.getAttribute('data-date');
+                    const report = reportContents[date];
+                    
+                    if (report) {
+                        // 添加淡出效果
+                        contentArea.style.opacity = '0';
+                        contentArea.style.transform = 'translateY(20px)';
+                        
+                        setTimeout(() => {
+                            currentReport.innerHTML = `
+                                <h2><i class="fas fa-file-alt"></i> ${report.title}</h2>
+                                <div class="divider"></div>
+                                ${report.content}
+                            `;
+                            
+                            // 添加淡入效果
+                            contentArea.style.opacity = '1';
+                            contentArea.style.transform = 'translateY(0)';
+                        }, 300);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
