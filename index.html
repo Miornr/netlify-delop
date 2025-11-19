@@ -28,8 +28,8 @@
             width: 100%;
             background-color: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 20px 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 10px 0;
+            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.08);
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -69,13 +69,13 @@
         
         .time-buttons {
             display: flex;
-            gap: 15px;
+            gap: 8px;
         }
         
         .time-btn {
             background: none;
             border: 1px solid #e0e0e0;
-            padding: 12px 24px;
+            padding: 8px 24px;
             cursor: pointer;
             border-radius: 30px;
             transition: all 0.3s ease;
@@ -113,7 +113,7 @@
         
         /* 内容区域 */
         .content-area {
-            margin-top: 160px;
+            margin-top: 10px;
             padding: 40px 20px;
             display: flex;
             flex-direction: column;
@@ -319,19 +319,23 @@
     <!-- 顶部固定导航 -->
     <div class="top-nav">
         <div class="nav-container">
-            <h1><i class="fas fa-chart-line"></i> 工作汇报展示</h1>
+            
             <div class="time-buttons">
-                <button class="time-btn active" data-date="2025/10/20 - 10/26">
-                    <i class="far fa-calendar-alt"></i> 2025/10/20 - 10/26
+                <h1><i class="fas fa-chart-line"></i> 工作汇报展示</h1>
+                <button class="time-btn active" data-date=" 10/20 - 10/26">
+                    <i class="far fa-calendar-alt"></i>  10/20 - 10/26
                 </button>
-                <button class="time-btn" data-date="2025/10/27 - 11/2">
-                    <i class="far fa-calendar-alt"></i> 2025/10/27 - 11/2
+                <button class="time-btn" data-date=" 10/27 - 11/2">
+                    <i class="far fa-calendar-alt"></i>  10/27 - 11/2
                 </button>
-                <button class="time-btn" data-date="2025/11/3 - 11/9">
-                    <i class="far fa-calendar-alt"></i> 2025/11/3 - 11/9
+                <button class="time-btn" data-date=" 11/3 - 11/9">
+                    <i class="far fa-calendar-alt"></i>  11/3 - 11/9
                 </button>
-                <button class="time-btn" data-date="2025/11/10 - 11/17">
-                    <i class="far fa-calendar-alt"></i> 2025/11/10 - 11/17
+                <button class="time-btn" data-date=" 11/10 - 11/16">
+                    <i class="far fa-calendar-alt"></i>  11/10 - 11/16
+                </button>
+                <button class="time-btn" data-date=" 11/17 - 11/23">
+                    <i class="far fa-calendar-alt"></i>  11/17 - 11/23
                 </button>
             </div>
         </div>
@@ -377,13 +381,13 @@
             
             // 不同日期的汇报内容
             const reportContents = {
-                '2025/10/20 - 10/26': {
-                    title: '工作汇报 - 2025/10/20 - 10/26',
+                ' 10/20 - 10/26': {
+                    title: '工作汇报 -  10/20 - 10/26',
                     content: `
                         <p>一、学习python。  
           1.掌握python语言的基础知识并自己实操编写，基本语法，如变量、数据类型、条件语句、循环语句和函数等。
           <br>
-          <div class="report-images">
+          <div class="report-image">
           <img src="1.png" alt="基础语法和变量">
           基础语法和变量
           <img src="2.png" alt="循环语句">
@@ -406,8 +410,8 @@
           <br></p>
                     `
                 },
-               '2025/10/27 - 11/2': {
-                    title: '工作汇报 - 2025/10/27 - 11/2',
+               ' 10/27 - 11/2': {
+                    title: '工作汇报 -  10/27 - 11/2',
                     content: `
                         <p>理解编程范式。</p>
                         <p>具体工作包括：</p>
@@ -425,39 +429,60 @@
                         </ul>
                         
                         <div class="report-image">
-                            <img src="5.png" alt="数据分析图表">
+                            <img src="5.png" alt="report-image">
                             <img src="6.png" alt="数据分析图表">
-                            <div class="image-caption">数据分析图表</div>
+                            <div class="image-caption">数据表</div>
                             
                         </div>
                                            `
                 },
-                '2025/11/3 - 11/9': {
-                    title: '工作汇报 - 2025/11/3 - 11/9',
+                ' 11/3 - 11/9': {
+                    title: '工作汇报 -  11/3 - 11/9',
                     content: `
-                        <p>本次汇报完成了项目第一阶段的所有功能，准备进入测试阶段，并对下一阶段工作进行了规划。</p>
-                        <p>具体工作包括：</p>
-                        <ul>
-                            <li>完成了所有核心功能的开发</li>
-                            <li>编写了完整的用户文档</li>
-                            <li>制定了测试计划和测试用例</li>
-                            <li>规划了第二阶段的功能需求</li>
-                            <li>准备了项目演示材料</li>
-                        </ul>
                         
-                        <div class="report-image">
-                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="项目成果展示">
-                            <div class="image-caption">项目成果展示</div>
-                        </div>
-                        
-                        <div class="divider"></div>
-                        <p><strong>下一步计划：</strong> 进行系统测试，修复发现的问题，准备项目上线。</p>
                     `
                 },
-                '2025/11/10 - 11/17': {
-                    title: '工作汇报 - 2025/11/10 - 11/17',
+                ' 11/10 - 11/16': {
+                    title: '工作汇报 -  11/10 - 11/16',
                     content: `
-                }`
+                `
+                },
+                ' 11/17 - 11/23': {
+                    title: '工作汇报 -  11/17 - 11/23',
+                    content: ` 
+                    <h1>阅读文献</h1>
+                    <div class="report-image">
+                            <img src="7.png" alt="项目成果展示">
+                            <div class="image-caption">文献</div>
+                        <p>Filling gaps in cloudy Landsat LST product by spatial-temporal fusion of 
+multi-scale data<br>
+用多尺度数据的时空融合填补多云陆地卫星LST产品的空白
+    <h3>一、研究目标</h3>
+    
+   作者明确了本研究需解决的两大核心问题：
+   
+技术层面：提出一种能同时应对 “大时间变化” 和 “大空间间隙” 的 Landsat LST gap filling 方法，提升极端场景下的重建精度；
+
+数据融合层面：突破 “单一传感器数据依赖” 的局限，通过多尺度数据的时空融合，补充待预测时间、待预测间隙的 LST 关键信息，降低重建不确定性；
+
+应用层面：为 Landsat LST 数据的广泛应用（如地表蒸散估算、城市热岛效应分析）提供 “连续、完整、高精度” 的数据集，解决现有方法因间隙问题导致 LST 数据无法用于长时序分析的瓶颈。
+</p>
+<h3>二、研究区</h3>
+本文中的实验是在美国的六个不同的研究区域进行的。上图显示了这六个区域的真彩色图像，标记为区域1-6。所有区域1-6覆盖50公里×50公里的空间范围，分别位于加利福尼亚州丹佛市、密西西比州、加利福尼亚州俄克拉何马州和印第安纳州。区域1-6的主要土地覆盖类型分别为草地和灌木、木本草地、草地、农田、干旱灌丛和农田、森林。
+<h3>三、研究数据</h3>   
+生成的 2km 分辨率、全天空、小时级 GOES LST 数据的总体均方根误差（RMSE）为 2.44K。该产品可从http://glass.umd.edu/allsky_LST/获取。
+为保证两类数据（Landsat 与 GOES LST 数据）的一致性，预先将 GOES LST 影像重投影至 Landsat LST 影像的坐标系，并根据 GOES LST 影像的覆盖范围对 Landsat LST 影像进行配准和裁剪。
+<h3>四、时空随机森林（STRF）的实现过程
+</h3>STRF 方法的输入包含四类关键数据
+目标 Landsat LST 影像（Lp​）：即待填充间隙的 Landsat LST 影像，空间分辨率 100m
+
+已知时刻 Landsat LST 影像（Lk​）：时间上与Lp​最接近的空间完整 Landsat LST 影像，同样为 100m 分辨率，用于提供目标区域的 “精细空间基准特征”，例如地表覆盖类型对应的 LST 空间分布规律。
+
+已知时刻 GOES LST 影像（Gk​）：与Lk​获取时间一致的 GOES LST 影像，空间分辨率 2km、全天空覆盖（无间隙），用于后续计算 LST 时间变化量。
+
+预测时刻 GOES LST 影像（Gp​）：与Lp​获取时间一致的 GOES LST 影像，同样为 2km 分辨率、全天空覆盖，与Gk​配对以提取 LST 的时间变化信息。
+
+            `
                 }
             };
             
@@ -474,6 +499,15 @@
                     setTimeout(() => {
                         this.classList.remove('pulse');
                     }, 600);
+
+                    // 点击日期按钮时将页面滚动到顶部（平滑滚动）
+                    // 这样无论当前滚动位置在哪里，都会回到页面顶部以显示最新内容
+                    try {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } catch (e) {
+                        // 在不支持 smooth 的浏览器回退到立即跳转
+                        window.scrollTo(0, 0);
+                    }
                     
                     // 获取日期并更新内容
                     const date = this.getAttribute('data-date');
