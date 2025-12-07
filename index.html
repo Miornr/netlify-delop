@@ -6,208 +6,258 @@
     <title>工作汇报展示</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-color: #f3f4f6;
+            --text-main: #2d3748;
+            --text-sub: #718096;
+            /* 修改：高度大幅减小 */
+            --nav-height: 80px; 
+            --content-width: 1200px; 
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            color: #333;
-            line-height: 1.6;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(102, 126, 234, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(118, 75, 162, 0.1) 0px, transparent 50%);
+            color: var(--text-main);
+            line-height: 1.7;
             min-height: 100vh;
         }
         
-        /* 顶部固定导航栏 */
+        /* === 顶部导航 === */
         .top-nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 10px 0;
-            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.9); /* 透明度稍微降低一点，增加清晰度 */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
             z-index: 1000;
+            height: var(--nav-height);
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            align-items: center; /* 垂直居中 */
             transition: all 0.3s ease;
         }
         
         .nav-container {
-            width: 90%;
-            max-width: 1200px;
+            width: 95%;
+            max-width: var(--content-width);
+            margin: 0 auto;
             display: flex;
-            flex-direction: column;
+            /* 修改：改为行布局，左右排列 */
+            flex-direction: row; 
             align-items: center;
+            justify-content: space-between;
             gap: 20px;
         }
         
-        .top-nav h1 {
-            font-size: 28px;
-            color: #222;
-            font-weight: 600;
-            letter-spacing: -0.5px;
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* 防止标题换行 */
+            flex-shrink: 0; 
+        }
+
+        .header-title h1 {
+            /* 标题稍微调小一点点以适应单行 */
+            font-size: 22px; 
+            color: var(--text-main);
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .header-title i {
+            color: #764ba2;
+            font-size: 20px;
+        }
+
+        /* 横向滚动条容器 */
+        .timeline-wrapper {
             position: relative;
-            padding-bottom: 8px;
+            /* 占据剩余空间 */
+            flex: 1; 
+            min-width: 0; /* 关键：防止 flex 子项溢出 */
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
         }
-        
-        .top-nav h1:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #6c757d, #adb5bd);
-            border-radius: 2px;
-        }
-        
+
         .time-buttons {
             display: flex;
-            gap: 8px;
+            gap: 10px; /* 间距微调 */
+            overflow-x: auto;
+            padding: 5px 10px; /* 减少 padding */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+            align-items: center;
+        }
+
+        .time-buttons::-webkit-scrollbar {
+            display: none;
         }
         
         .time-btn {
-            background: none;
-            border: 1px solid #e0e0e0;
-            padding: 8px 24px;
+            flex: 0 0 auto;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 8px 20px; /* 按钮稍微压扁一点 */
             cursor: pointer;
-            border-radius: 30px;
-            transition: all 0.3s ease;
-            font-size: 15px;
-            color: #555;
-            position: relative;
-            overflow: hidden;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+            color: var(--text-sub);
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-        
-        .time-btn i {
-            font-size: 14px;
-            transition: transform 0.3s ease;
+            gap: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
         }
         
         .time-btn:hover {
-            background-color: #f5f5f5;
-            border-color: #d0d0d0;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        .time-btn:hover i {
-            transform: rotate(15deg);
+            color: #764ba2;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
         }
         
         .time-btn.active {
-            background: linear-gradient(135deg, #6c757d, #495057);
+            background: var(--primary-gradient);
             color: white;
-            border-color: #495057;
-            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
+            transform: scale(1.02); /* 缩放幅度减小，防止撑开高度 */
         }
-        
-        /* 内容区域 */
+
+        /* === 内容区域 === */
         .content-area {
-            margin-top: 10px;
-            padding: 40px 20px;
+            margin-top: var(--nav-height); /* 自动适配新高度 */
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            animation: fadeIn 0.8s ease;
+            animation: slideUp 0.6s ease-out;
+            min-height: calc(100vh - var(--nav-height));
         }
         
         .report-content {
             background-color: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
-            max-width: 800px;
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            max-width: var(--content-width); 
             width: 100%;
-            margin-bottom: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 50px;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.8);
         }
         
-        .report-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .report-content:before {
+        .report-content::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(to bottom, #6c757d, #adb5bd);
+            width: 100%;
+            height: 6px;
+            background: var(--primary-gradient);
         }
         
         .report-content h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #222;
-            font-weight: 600;
+            font-size: 30px;
+            margin-bottom: 30px;
+            color: var(--text-main);
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
         
         .report-content h2 i {
-            color: #6c757d;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .report-content h3 {
+            font-size: 22px;
+            margin: 35px 0 20px 0;
+            padding-left: 15px;
+            border-left: 5px solid #764ba2;
+            color: var(--text-main);
+            line-height: 1.4;
+            font-weight: 600;
         }
         
-        .report-content p {
-            color: #555;
-            font-size: 16px;
-            line-height: 1.8;
+        .report-content p, .report-content li, .report-content div {
+            color: #4a5568;
+            font-size: 18px; 
+            line-height: 1.9;
             margin-bottom: 15px;
+            text-align: justify;
         }
         
         .divider {
             height: 1px;
-            background: linear-gradient(to right, transparent, #eaeaea, transparent);
-            margin: 25px 0;
+            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+            margin: 25px 0 40px 0;
         }
         
         ul {
-            margin-left: 20px;
-            margin-top: 10px;
-            color: #555;
+            list-style: none;
+            margin-left: 5px;
         }
         
         li {
-            margin-bottom: 8px;
+            padding-left: 25px;
             position: relative;
-            padding-left: 10px;
         }
         
-        li:before {
-            content: '•';
-            color: #6c757d;
-            font-weight: bold;
+        li::before {
+            content: '';
             position: absolute;
-            left: -10px;
+            left: 0;
+            top: 13px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #cbd5e0;
         }
-        
-        /* 图片样式 */
+
         .report-image {
-            margin: 25px 0;
+            margin: 40px 0 !important;
+            display: flex !important;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 16px;
             text-align: center;
         }
         
         .report-image img {
             max-width: 100%;
+            max-height: 500px; 
             height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease;
+            cursor: zoom-in;
+            display: block;
+            margin: 0 auto;
         }
         
         .report-image img:hover {
@@ -215,139 +265,88 @@
         }
         
         .image-caption {
-            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+            margin-top: 12px;
+            font-size: 15px;
+            color: #a0aec0;
             font-style: italic;
-            color: #6c757d;
-            font-size: 14px;
         }
         
-        /* 动画效果 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        /* 响应式设计 */
+
+        /* 移动端适配：手机上还是保持两行，否则放不下 */
         @media (max-width: 768px) {
-            .top-nav {
-                padding: 15px 0;
+            :root { 
+                /* 手机端稍微高一点，因为要换行 */
+                --nav-height: 120px; 
+                --content-width: 95%;
             }
             
             .nav-container {
-                width: 95%;
-            }
-            
-            .top-nav h1 {
-                font-size: 22px;
-            }
-            
-            .time-buttons {
-                flex-wrap: wrap;
+                flex-direction: column; /* 手机端垂直排列 */
                 justify-content: center;
+                gap: 10px;
             }
-            
-            .time-btn {
-                padding: 10px 18px;
-                font-size: 14px;
-            }
-            
-            .content-area {
-                margin-top: 170px;
-                padding: 20px;
+
+            .header-title h1 {
+                font-size: 18px;
             }
             
             .report-content {
                 padding: 25px;
             }
-        }
-        
-        @media (max-width: 480px) {
-            .time-buttons {
-                gap: 10px;
-            }
-            
-            .time-btn {
-                padding: 8px 15px;
-                font-size: 13px;
-            }
-            
-            .content-area {
-                margin-top: 180px;
-            }
             
             .report-content h2 {
-                font-size: 20px;
+                font-size: 24px;
             }
-        }
-        
-        /* 装饰元素 */
-        .decoration {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(108, 117, 125, 0.05) 0%, rgba(108, 117, 125, 0) 70%);
-            z-index: -1;
-        }
-        
-        .decoration:nth-child(1) {
-            top: 10%;
-            left: 5%;
-        }
-        
-        .decoration:nth-child(2) {
-            bottom: 10%;
-            right: 5%;
+            
+            .report-content p, .report-content li {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 装饰背景元素 -->
-    <div class="decoration"></div>
-    <div class="decoration"></div>
     
-    <!-- 顶部固定导航 -->
     <div class="top-nav">
         <div class="nav-container">
+            <div class="header-title">
+                <i class="fas fa-chart-pie"></i>
+                <h1>工作汇报展示中心</h1>
+            </div>
             
-            <div class="time-buttons">
-                <h1><i class="fas fa-chart-line"></i> 工作汇报展示</h1>
-                <button class="time-btn active" data-date=" 10/20 - 10/26">
-                    <i class="far fa-calendar-alt"></i>  10/20 - 10/26
-                </button>
-                <button class="time-btn" data-date=" 10/27 - 11/2">
-                    <i class="far fa-calendar-alt"></i>  10/27 - 11/2
-                </button>
-                <button class="time-btn" data-date=" 11/3 - 11/9">
-                    <i class="far fa-calendar-alt"></i>  11/3 - 11/9
-                </button>
-                <button class="time-btn" data-date=" 11/10 - 11/16">
-                    <i class="far fa-calendar-alt"></i>  11/10 - 11/16
-                </button>
-                <button class="time-btn" data-date=" 11/17 - 11/23">
-                    <i class="far fa-calendar-alt"></i>  11/17 - 11/23
-                </button>
-                <button class="time-btn" data-date=" 11/24 - 11/30">
-                    <i class="far fa-calendar-alt"></i>  11/24 - 11/30
-                </button>
-                <button class="time-btn" data-date=" 12/1 - 12/7">
-                    <i class="far fa-calendar-alt"></i>  12/1 - 12/7
-                </button>
+            <div class="timeline-wrapper">
+                <div class="time-buttons" id="timeBtnContainer">
+                    <button class="time-btn active" data-date=" 10/20 - 10/26">
+                        <i class="far fa-calendar"></i> 10/20 - 10/26
+                    </button>
+                    <button class="time-btn" data-date=" 10/27 - 11/2">
+                        <i class="far fa-calendar"></i> 10/27 - 11/2
+                    </button>
+                    <button class="time-btn" data-date=" 11/3 - 11/9">
+                        <i class="far fa-calendar"></i> 11/3 - 11/9
+                    </button>
+                    <button class="time-btn" data-date=" 11/10 - 11/16">
+                        <i class="far fa-calendar"></i> 11/10 - 11/16
+                    </button>
+                    <button class="time-btn" data-date=" 11/17 - 11/23">
+                        <i class="far fa-calendar"></i> 11/17 - 11/23
+                    </button>
+                    <button class="time-btn" data-date=" 11/24 - 11/30">
+                        <i class="far fa-calendar"></i> 11/24 - 11/30
+                    </button>
+                    <button class="time-btn" data-date=" 12/1 - 12/7">
+                        <i class="far fa-calendar"></i> 12/1 - 12/7
+                    </button>
+                </div>
             </div>
         </div>
     </div>
     
-    <!-- 内容区域 - 只显示一个汇报内容 -->
     <div class="content-area">
         <div class="report-content" id="current-report">
             <h2><i class="fas fa-file-alt"></i> 工作汇报 - 2025-11-01</h2>
@@ -363,29 +362,17 @@
           <img src="3.png" alt="条件语句">
           <div class="image-caption">条件语句</div>
         </div>
-
-          2.更深入的学习了面向对象编程、递归排序算法。
-        
-          <br>
-          3.了解python的前沿技术，如数据分析、机器学习和人工智能等。
-         <br>
-          Python能够实现图像识别、自然语言处理、语音识别、机器翻译;Matplotlib和Seaborn等库可以进行数据可视化;<br>
-          二、制作网站。
-          <br>  
-          1.学习了HTML、CSS和JavaScript等前端技术，掌握了网页布局、样式设计和交互效果的实现方法。
-          <br>  
-          2.注册使用域名链接服务器，完成网站的上线发布。
-          <br></p>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const timeButtons = document.querySelectorAll('.time-btn');
+            const btnContainer = document.getElementById('timeBtnContainer');
             const currentReport = document.getElementById('current-report');
             const contentArea = document.querySelector('.content-area');
             
-            // 不同日期的汇报内容
+            // 原始数据，完全保持不变
             const reportContents = {
                 ' 10/20 - 10/26': {
                     title: '工作汇报 -  10/20 - 10/26',
@@ -552,35 +539,27 @@ multi-scale data<br>
             
             timeButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // 移除所有按钮的active类
                     timeButtons.forEach(btn => btn.classList.remove('active'));
-                    
-                    // 给当前点击的按钮添加active类
                     this.classList.add('active');
                     
-                    // 添加点击动画效果
-                    this.classList.add('pulse');
-                    setTimeout(() => {
-                        this.classList.remove('pulse');
-                    }, 600);
-
-                    // 点击日期按钮时将页面滚动到顶部（平滑滚动）
-                    // 这样无论当前滚动位置在哪里，都会回到页面顶部以显示最新内容
-                    try {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    } catch (e) {
-                        // 在不支持 smooth 的浏览器回退到立即跳转
-                        window.scrollTo(0, 0);
-                    }
+                    const containerWidth = btnContainer.offsetWidth;
+                    const btnLeft = this.offsetLeft;
+                    const btnWidth = this.offsetWidth;
+                    const scrollLeft = btnLeft - (containerWidth / 2) + (btnWidth / 2);
                     
-                    // 获取日期并更新内容
+                    btnContainer.scrollTo({
+                        left: scrollLeft,
+                        behavior: 'smooth'
+                    });
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
                     const date = this.getAttribute('data-date');
                     const report = reportContents[date];
                     
                     if (report) {
-                        // 添加淡出效果
                         contentArea.style.opacity = '0';
-                        contentArea.style.transform = 'translateY(20px)';
+                        contentArea.style.transform = 'translateY(10px)';
                         
                         setTimeout(() => {
                             currentReport.innerHTML = `
@@ -588,14 +567,17 @@ multi-scale data<br>
                                 <div class="divider"></div>
                                 ${report.content}
                             `;
-                            
-                            // 添加淡入效果
                             contentArea.style.opacity = '1';
                             contentArea.style.transform = 'translateY(0)';
-                        }, 300);
+                        }, 250);
                     }
                 });
             });
+            
+            // 自动加载第一条
+            if (timeButtons.length > 0) {
+                 timeButtons[0].click();
+            }
         });
     </script>
 </body>
