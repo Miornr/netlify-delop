@@ -11,8 +11,9 @@
             --bg-color: #f3f4f6;
             --text-main: #2d3748;
             --text-sub: #718096;
-            /* 修改：高度大幅减小 */
-            --nav-height: 80px; 
+            
+            /* 修改点：高度极大压缩 */
+            --nav-height: 70px; 
             --content-width: 1200px; 
         }
 
@@ -34,21 +35,21 @@
             min-height: 100vh;
         }
         
-        /* === 顶部导航 === */
+        /* === 顶部导航 (极致紧凑版) === */
         .top-nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.9); /* 透明度稍微降低一点，增加清晰度 */
+            height: var(--nav-height); /* 强制高度 */
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
             z-index: 1000;
-            height: var(--nav-height);
-            display: flex;
-            align-items: center; /* 垂直居中 */
+            display: flex; /* 使用Flex垂直居中 */
+            align-items: center;
             transition: all 0.3s ease;
         }
         
@@ -57,7 +58,7 @@
             max-width: var(--content-width);
             margin: 0 auto;
             display: flex;
-            /* 修改：改为行布局，左右排列 */
+            /* 修改点：改为左右布局 */
             flex-direction: row; 
             align-items: center;
             justify-content: space-between;
@@ -67,43 +68,43 @@
         .header-title {
             display: flex;
             align-items: center;
-            gap: 10px;
-            /* 防止标题换行 */
+            gap: 8px;
+            /* 标题防止换行，固定在左侧 */
             flex-shrink: 0; 
         }
 
         .header-title h1 {
-            /* 标题稍微调小一点点以适应单行 */
-            font-size: 22px; 
+            font-size: 20px; /* 字体改小 */
             color: var(--text-main);
             font-weight: 700;
             margin: 0;
+            line-height: 1;
         }
         
         .header-title i {
             color: #764ba2;
-            font-size: 20px;
+            font-size: 18px;
         }
 
-        /* 横向滚动条容器 */
+        /* 横向滚动区域 */
         .timeline-wrapper {
             position: relative;
-            /* 占据剩余空间 */
-            flex: 1; 
-            min-width: 0; /* 关键：防止 flex 子项溢出 */
-            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            flex: 1; /* 占据剩余空间 */
+            overflow: hidden; /* 防止溢出 */
+            /* 遮罩仅在右侧保留一点点 */
+            mask-image: linear-gradient(to right, transparent 0%, black 2%, black 95%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 2%, black 95%, transparent 100%);
         }
 
         .time-buttons {
             display: flex;
-            gap: 10px; /* 间距微调 */
+            gap: 10px; /* 间距紧凑 */
             overflow-x: auto;
-            padding: 5px 10px; /* 减少 padding */
+            padding: 5px 10px; /* Padding减小 */
             scrollbar-width: none;
             -ms-overflow-style: none;
             scroll-behavior: smooth;
-            align-items: center;
+            align-items: center; /* 垂直居中 */
         }
 
         .time-buttons::-webkit-scrollbar {
@@ -113,37 +114,38 @@
         .time-btn {
             flex: 0 0 auto;
             background: #fff;
-            border: 1px solid rgba(0,0,0,0.05);
-            padding: 8px 20px; /* 按钮稍微压扁一点 */
+            border: 1px solid rgba(0,0,0,0.08);
+            /* 修改点：按钮变矮、变小 */
+            padding: 6px 16px; 
             cursor: pointer;
             border-radius: 50px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 14px;
+            transition: all 0.2s ease;
+            font-size: 13px; 
             color: var(--text-sub);
-            font-weight: 500;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            white-space: nowrap; /* 防止文字换行 */
         }
         
         .time-btn:hover {
             color: #764ba2;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            background-color: #f7f9fc;
         }
         
         .time-btn.active {
             background: var(--primary-gradient);
             color: white;
             border-color: transparent;
-            box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
-            transform: scale(1.02); /* 缩放幅度减小，防止撑开高度 */
+            box-shadow: 0 3px 10px rgba(118, 75, 162, 0.25);
+            transform: scale(1.02); /* 缩放幅度减小 */
         }
 
         /* === 内容区域 === */
         .content-area {
-            margin-top: var(--nav-height); /* 自动适配新高度 */
+            margin-top: var(--nav-height);
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
@@ -171,12 +173,12 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 6px;
+            height: 6px; /* 装饰条变细 */
             background: var(--primary-gradient);
         }
         
         .report-content h2 {
-            font-size: 30px;
+            font-size: 32px;
             margin-bottom: 30px;
             color: var(--text-main);
             font-weight: 700;
@@ -278,18 +280,18 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 移动端适配：手机上还是保持两行，否则放不下 */
+        /* 响应式适配 */
         @media (max-width: 768px) {
             :root { 
-                /* 手机端稍微高一点，因为要换行 */
-                --nav-height: 120px; 
+                /* 手机端稍微高一点，因为放不下左右布局，自动变回上下 */
+                --nav-height: 110px; 
                 --content-width: 95%;
             }
             
             .nav-container {
-                flex-direction: column; /* 手机端垂直排列 */
-                justify-content: center;
+                flex-direction: column; /* 手机端变回上下结构 */
                 gap: 10px;
+                justify-content: center;
             }
 
             .header-title h1 {
@@ -316,31 +318,30 @@
         <div class="nav-container">
             <div class="header-title">
                 <i class="fas fa-chart-pie"></i>
-                <h1>工作汇报展示中心</h1>
-            </div>
+                <h1>工作汇报</h1> </div>
             
             <div class="timeline-wrapper">
                 <div class="time-buttons" id="timeBtnContainer">
                     <button class="time-btn active" data-date=" 10/20 - 10/26">
-                        <i class="far fa-calendar"></i> 10/20 - 10/26
+                        <i class="far fa-calendar"></i> 10/20-10/26
                     </button>
                     <button class="time-btn" data-date=" 10/27 - 11/2">
-                        <i class="far fa-calendar"></i> 10/27 - 11/2
+                        <i class="far fa-calendar"></i> 10/27-11/2
                     </button>
                     <button class="time-btn" data-date=" 11/3 - 11/9">
-                        <i class="far fa-calendar"></i> 11/3 - 11/9
+                        <i class="far fa-calendar"></i> 11/3-11/9
                     </button>
                     <button class="time-btn" data-date=" 11/10 - 11/16">
-                        <i class="far fa-calendar"></i> 11/10 - 11/16
+                        <i class="far fa-calendar"></i> 11/10-11/16
                     </button>
                     <button class="time-btn" data-date=" 11/17 - 11/23">
-                        <i class="far fa-calendar"></i> 11/17 - 11/23
+                        <i class="far fa-calendar"></i> 11/17-11/23
                     </button>
                     <button class="time-btn" data-date=" 11/24 - 11/30">
-                        <i class="far fa-calendar"></i> 11/24 - 11/30
+                        <i class="far fa-calendar"></i> 11/24-11/30
                     </button>
                     <button class="time-btn" data-date=" 12/1 - 12/7">
-                        <i class="far fa-calendar"></i> 12/1 - 12/7
+                        <i class="far fa-calendar"></i> 12/1-12/7
                     </button>
                 </div>
             </div>
@@ -353,41 +354,15 @@
             <div class="divider"></div>
             <p>一、学习python。  
           1.掌握python语言的基础知识并自己实操编写，基本语法，如变量、数据类型、条件语句、循环语句和函数等。
-          <br>
           <div class="report-image">
-          <img src="1.png" alt="基础语法和变量">
-          <div class="image-caption">基础语法和变量</div>
-          <img src="2.png" alt="循环语句">
-          <div class="image-caption">循环语句</div>
-          <img src="3.png" alt="条件语句">
+                <img src="1.png" alt="基础语法和变量">
+                <div class="image-caption">基础语法和变量</div>
+                <img src="2.png" alt="循环语句">
+                <div class="image-caption">循环语句</div>
+                <img src="3.png" alt="条件语句">
           <div class="image-caption">条件语句</div>
-        </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const timeButtons = document.querySelectorAll('.time-btn');
-            const btnContainer = document.getElementById('timeBtnContainer');
-            const currentReport = document.getElementById('current-report');
-            const contentArea = document.querySelector('.content-area');
-            
-            // 原始数据，完全保持不变
-            const reportContents = {
-                ' 10/20 - 10/26': {
-                    title: '工作汇报 -  10/20 - 10/26',
-                    content: `
-                        <p>一、学习python。  
-          1.掌握python语言的基础知识并自己实操编写，基本语法，如变量、数据类型、条件语句、循环语句和函数等。
-          <br>
-          <div class="report-image">
-                            <img src="1.png" alt="项目成果展示">
-                            <img src="2.png" alt="项目成果展示">
-                            <img src="3.png" alt="项目成果展示">
-                            <div class="image-caption">文献</div></div>
-        <br>
+          </div>
           2.更深入的学习了面向对象编程、递归排序算法。
-        
           <br>
           3.了解python的前沿技术，如数据分析、机器学习和人工智能等。
          <br>
@@ -398,6 +373,40 @@
           <br>  
           2.注册使用域名链接服务器，完成网站的上线发布。
           <br></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeButtons = document.querySelectorAll('.time-btn');
+            const btnContainer = document.getElementById('timeBtnContainer');
+            const currentReport = document.getElementById('current-report');
+            const contentArea = document.querySelector('.content-area');
+            
+            // 原始内容完全保持不变
+            const reportContents = {
+                ' 10/20 - 10/26': {
+                    title: '工作汇报 -  10/20 - 10/26',
+                    content: `
+                        一、学习python。  
+          1.掌握python语言的基础知识并自己实操编写，基本语法，如变量、数据类型、条件语句、循环语句和函数等。
+          <br>
+          <div class="report-image">
+                            <img src="1.png" alt="项目成果展示">
+                            <img src="2.png" alt="项目成果展示">
+                            <img src="3.png" alt="项目成果展示">
+                            <div class="image-caption">文献</div>
+            </div>
+          2.更深入的学习了面向对象编程、递归排序算法。
+                  3.了解python的前沿技术，如数据分析、机器学习和人工智能等。
+         <br>
+          Python能够实现图像识别、自然语言处理、语音识别、机器翻译;Matplotlib和Seaborn等库可以进行数据可视化;<br>
+          二、制作网站。
+          <br>  
+          1.学习了HTML、CSS和JavaScript等前端技术，掌握了网页布局、样式设计和交互效果的实现方法。
+          <br>  
+          2.注册使用域名链接服务器，完成网站的上线发布。
+          <br>
                     `
                 },
                ' 10/27 - 11/2': {
@@ -512,12 +521,13 @@ multi-scale data<br>
                     <div class="report-image">
                             <img src="11.png" alt="项目成果展示">
                             <div class="image-caption">文献</div></div>
-                  基于哨兵 - 1 号和哨兵 - 2 号数据的湿地制图双分支深度学习框架
-
+                        Filling gaps in cloudy Landsat LST product by spatial-temporal fusion of 
+multi-scale data<br>
+用多尺度数据的时空融合填补多云陆地卫星LST产品的空白
     <h3>一、研究目标</h3>
     1、湿地保护迫切需求：湿地是生态意义极关键的 ecosystems，但面临严重威胁：一方面，它能提供碳储存、水体净化、生物多样性维持、防洪等核心生态服务，还是淡水与咸水环境交汇的特殊系统，对缓解气候变化、支撑渔业和旅游业等人类活动也有重要作用；另一方面，自 20 世纪初以来，全球近 2/3 湿地因人类活动（如加拿大的欧洲定居、城市 / 农业 / 工业扩张）和自然压力（气候变化、污染、入侵物种）流失或退化，导致其生态服务能力受损，直接威胁生态平衡与人类福祉，因此保护湿地的需求极为迫切。
-<br>2、湿地制图的必要性与传统技术的局限：准确的湿地地图是保护与管理的基础 —— 它能支撑湿地空间分布、生态功能、 temporal 变化的研究，但传统制图方法存在明显短板：地面调查劳动密集且成本高，尤其不适用于偏远或动态变化的湿地；虽然后来遥感技术（如欧洲哥白尼计划的哨兵 1、哨兵 2 卫星）成为替代方案（哨兵 1 的雷达数据能探测植被下水体，哨兵 2 的光学数据捕捉地物细节，且两者重访周期仅 5-6 天），但湿地自身的复杂性（高度碎片化、小地类边界模糊导致类内变异大）、部分地类光谱相似性，仍让准确分类成为难题。
-<br>
+2、湿地制图的必要性与传统技术的局限：准确的湿地地图是保护与管理的基础 —— 它能支撑湿地空间分布、生态功能、 temporal 变化的研究，但传统制图方法存在明显短板：地面调查劳动密集且成本高，尤其不适用于偏远或动态变化的湿地；虽然后来遥感技术（如欧洲哥白尼计划的哨兵 1、哨兵 2 卫星）成为替代方案（哨兵 1 的雷达数据能探测植被下水体，哨兵 2 的光学数据捕捉地物细节，且两者重访周期仅 5-6 天），但湿地自身的复杂性（高度碎片化、小地类边界模糊导致类内变异大）、部分地类光谱相似性，仍让准确分类成为难题。
+
 3、现有分类方法的不足与深度学习的发展机遇：传统分类模型（如随机森林）依赖人工特征工程，结构简单，难以应对湿地的复杂环境；虽然后期深度学习（DL）中的卷积神经网络（CNNs）因能自动提取局部空间特征（如边缘、纹理），在湿地制图中表现优于浅层模型，但 CNNs 仅擅长 “细粒度细节”，缺乏对大范围上下文信息的捕捉；而 Transformer（尤其是视觉 Transformer ViT）虽能通过自注意力机制提取全局特征（如地物间的空间依赖关系），且已有研究尝试将其用于湿地制图，但 “CNN 与 ViT 融合” 的架构在该领域应用仍较少，尚未充分发挥两者 “局部 + 全局” 特征互补的优势
 
 <h3>二、研究数据</h3>
@@ -572,11 +582,6 @@ multi-scale data<br>
                     }
                 });
             });
-            
-            // 自动加载第一条
-            if (timeButtons.length > 0) {
-                 timeButtons[0].click();
-            }
         });
     </script>
 </body>
