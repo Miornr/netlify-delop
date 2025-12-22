@@ -343,6 +343,12 @@
                     <button class="time-btn" data-date=" 12/1 - 12/7">
                         <i class="far fa-calendar"></i> 12/1-12/7
                     </button>
+                    <button class="time-btn" data-date=" 12/8 - 12/14">
+                        <i class="far fa-calendar"></i> 12/8 - 12/14
+                    </button>
+                    <button class="time-btn" data-date=" 12/15 - 12/21">
+                        <i class="far fa-calendar"></i> 12/15 - 12/21
+                    </button>
                 </div>
             </div>
         </div>
@@ -542,6 +548,97 @@ multi-scale data<br>
 但草本沼泽的召回率略低（0.82），表明其偶尔会与草地或其他植被区域混淆。灌丛的验证 F1 分数为 0.89，且召回率较高（0.97），分类结果可靠。
 这些结果表明，该模型能够利用 S1 和 S2 数据提取湿地独特的光谱和纹理特征。
 
+                `
+                },
+                ' 12/8 - 12/14': {
+                    title: '工作汇报 -  12/8 - 12/14',
+                    content: ` <h3>阅读文献</h3>
+                      基于频谱—空间多特征深度学习的高光谱遥感图像分类算法研究
+    <h3>一、研究背景</h3><br>
+研究问题：传统方法忽视空间特征。
+研究目的：解决传统高光谱分类方法仅利用光谱特征，而忽略空间信息，导致分类精度不高。
+<h3>二、研究方法</h3><br>
+核心方法：
+PCA（光谱）+ 引导滤波（空间）+ SAE（深度学习）。
+
+数据预处理与特征提取：
+光谱特征+空间特征+特征融合
+
+深度学习分类器：
+采用堆叠稀疏自编码器作为核心分类模型。
+将融合后的特征向量输入SAE进行无监督预训练和有监督微调，最终完成分类。
+<div class="report-image">
+                            <img src="14.png" alt="项目成果展示">
+                            <div class="image-caption">文献</div></div>
+                             <div class="report-image">
+                            <img src="16.png" alt="项目成果展示">
+                            <div class="image-caption">文献</div></div>
+
+<h3>三、实验结果</h3><br>
+1、创新点：提出了 GF-FSAE 框架;在输入深度网络之前就完成了光谱与空间特征的融合;设置不同窗口大小的引导滤波，提取了多尺度的空间特征
+2、难点：高光谱数据的特殊性。对于高光谱数据的可解释性，是否有领域内公认的评估指标或可视化方法？；从“解释”到“改进”的鸿沟。
+是否有将XAI结果作为反馈信号，引导高光谱模型训练（如注意力机制、损失函数设计
+                `
+                },
+                ' 12/15 - 12/21': {
+                    title: '工作汇报 -  12/15 - 12/21',
+                    content: `<h3>遥感图像解译</h3>
+                    1、实现遥感图像光谱特征，包括基础光谱特征及指数光谱特征的提取<br>
+                    （1）计算均值
+利用Band Math工具，并输入公式(float(b1)+float(b2)+float(b3)+float(b4))/4，其中b1、b2、b3、b4分别对应Band1、Band2、Band3、Band4。<br>（2）2、计算标准差
+利用Band Math工具，并输入公式
+，其中b1、b2、b3、b4分别对应Band1、Band2、Band3、Band4。<br>（3）3、计算NDVI（植被指数）
+   利用Band Math工具，并输入公式(float(b1)-float(b2))/(float(b1)+float(b2))
+，其中b1、b2分别对应Band4（近红外波段）、Band3（红波段）。<br>（4）4、计算NDWI（水体指数）利用Band Math工具，并输入公式(float(b1)-float(b2))/(float(b1)+float(b2))
+，其中b1、b2分别对应Band2（绿波段）、Band4（近红外波段）。<br>
+                    2、通过不同特征组合，实现最大似然及支持向量积的分类<br>
+                    (1)组合预处理后影像+均值+标准差
+   利用Build Layer Stack工具，输入文件为finish.dat、mean.dat以及std.dat<br>
+(2)组合预处理后影像+均值+标准差+NDVI+NDWI
+   利用Build Layer Stack工具，输入文件为finish.dat、mean.dat、std.dat<br>
+   (3)组合预处理后影像+均值+标准差+NDVI+NDWI
+   利用Build Layer Stack工具，输入文件为finish.dat、NDVI.dat、NDWI.dat、mean.dat以及std.dat<br>
+                    3、实现精度验证，对比不同特征组合及不同方法的分类精度
+                    <br>
+                    (1)验证预处理后影像+均值+标准差
+利用Tool Box工具中找到分类Classificaton下的Post Classification中的Confunsion Matrix Using Ground Truth ROIs 工具进行精度和Kappa系数的计算，选择经过分类处理得到的MDC_lay_fi_mean_std.dat，并对应验证样本与训练样本<br>
+(2)验证预处理后影像+NDVI+NDWI与1中讲述步骤相同，输入文件为MDC_lay_fi_NDVI_NDWI.dat，得到结果如下:
+                    <br><div class="report-image">
+                            <img src="15.png" alt="展示">
+                            <div class="image-caption">数据</div></div>
+（3）六、光谱角填图分类分类
+1、预处理后影像+均值+标准差分类    
+在Tool Box工具中找到分类Classificaton下的监督分类Supervised Classification中的Spectral Angle Mapper Classification工具，输入文件为经过特征组合的lay_fi_mean_std.dat文件（三中1处理得到的文件），并选择训练样本进行分类，得到结果如下：
+                    <br><div class="report-image">
+                            <img src="17.png" alt="展示">
+                            <div class="image-caption">数据</div></div>
+（4）预处理后影像+NDVI+NDWI分类与1中所述步骤相同，但输入文件为经过特征组合的lay_fi_NDVI_NDWI.dat文件（三中2处理得到的文件），并选择训练样本进行分类，得到结果如下:
+                    <br><div class="report-image">
+                            <img src="18.png" alt="展示">
+                            <div class="image-caption">数据</div></div>
+（5）预处理后影像+均值+标准差+NDVI+NDWI分类    
+与1中所述步骤相同，但输入文件为经过特征组合的lay_ALL.dat文件（三中3处理得到的文件），并选择训练样本
+（6）精度验证利用Co-occurrence Measures(灰度共生矩阵)处理经过预处理后的finish.dat图像，由于运行的时间问题，只选取一个波段进行，并只选取Mean（均值）和Variance(方差)进行计算，如下图所示:
+                    <br><div class="report-image">
+                            <img src="19.png" alt="展示">
+                            <div class="image-caption">数据</div></div>
+（7）数学形态计算
+利用Convolutions and Morphology(卷积运算 和 数学形态学)处理经过预处理后的finish.dat图像，选取Morphology中的opening计算，如下图所示
+其中选取opening计算是为了能有效去除这些孤立的小斑块，同时基本保持大片分类区域的形状和面积不变，使分类图看起来更干净、更专业
+                    <br><div class="report-image">
+                            <img src="20.png" alt="展示">
+                            <div class="image-caption">数据</div></div>
+（8）预处理后影像+灰度共生矩阵特征分类
+    在Tool Box工具中找到分类Classificaton下的监督分类Supervised Classification中的Maximum Likelihood Classification工具，输入文件为经过特征组合的lay_finish_CM.dat文件（十中1处理得到的文件），并选择训练样本
+                    <br><div class="report-image">
+                            <img src="21.png" alt="展示">
+                            <div class="image-caption">数据</div></div>
+（9）光谱角填图分类
+（10）精度验证
+ 经过最大似然分类与光谱角填图分类后得到的精度与Kappa系数具体如下所示
+                    <br><div class="report-image">
+                            <img src="22.png" alt="展示">
+                            <div class="image-caption">数据</div></div>
                 `
                 }
             };
